@@ -3,7 +3,7 @@
 
 ## Principais funções
 
--**`printf e scanf`**: são as funções de saída e entrada padrão, respectivamente. A função "printf" é usada para imprimir dados na saída padrão (normalmente o console), enquanto a função "scanf" é usada para ler dados da entrada padrão (também normalmente o console). Essas funções permitem que o programa se comunique com o usuário por meio de entrada e saída de dados. <br>
+-**`printf e scanf`**: São as funções de saída e entrada padrão, respectivamente. A função "printf" é usada para imprimir dados na saída padrão (normalmente o console), enquanto a função "scanf" é usada para ler dados da entrada padrão (também normalmente o console). Essas funções permitem que o programa se comunique com o usuário por meio de entrada e saída de dados. <br>
 
 -**`fopen, fclose", fread" e fwrite`**: Essas funções são usadas para manipular arquivos. A função "fopen" é usada para abrir um arquivo, enquanto a função "fclose" é usada para fechá-lo. As funções "fread" e "fwrite" são usadas para ler e escrever dados em um arquivo, respectivamente.<br>
 
@@ -27,17 +27,17 @@
 
 -**`free()`**: Para liberar a memória alocada dinamicamente.<br>
 
--**`time()`**: para obter a data e horário atual em segundos desde 1 de janeiro de 1970<br>
+-**`time()`**: Para obter a data e horário atual em segundos desde 1 de janeiro de 1970<br>
 
--**`localtime()`**: para converter o tempo em segundos para uma estrutura struct tm contendo informações de data e hora locais.<br>
+-**`localtime()`**: Para converter o tempo em segundos para uma estrutura struct tm contendo informações de data e hora locais.<br>
 
--**`strftime()`**: para formatar uma estrutura struct tm em uma string de data e hora.<br>
+-**`strftime()`**: Para formatar uma estrutura struct tm em uma string de data e hora.<br>
 
--**`rand()`**: para gerar números aleatórios;<br>
+-**`rand()`**: Para gerar números aleatórios;<br>
 
--**`system()`**: para executar comandos do sistema operacional;<br>
+-**`system()`**: Para executar comandos do sistema operacional;<br>
 
--**`exit()`**: para encerrar um programa.<br>
+-**`exit()`**: Para encerrar um programa.<br>
 
 
 ## Exemplos
