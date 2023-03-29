@@ -3,7 +3,7 @@
 macros e funções para funções de argumentos variáveis e faça
 uma descrição delas.
 <br>
-### As principais funçoes
+### As principais funçoes<br>
 - A principal função variádica da biblioteca padrão C é a função printf(), que é usada para imprimir valores formatados na saída padrão.
 - va_start(): essa função é usada para inicializar um objeto do tipo va_list, que é usado para percorrer a lista de argumentos variáveis passados para uma função variádica.
 - va_arg(): essa função é usada para obter o próximo argumento na lista de argumentos variáveis passados para uma função variádica. O tipo do argumento a ser obtido é especificado como um parâmetro para a função.
