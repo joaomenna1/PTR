@@ -2,47 +2,41 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define SEQUENCE_SIZE 1000 // tamanho da sequência, obs aumentando o valor pode  dar o segmentation fault
-/*
-Uma falha de segmentação em C++ ou C ocorre quando algum programa tenta acessar uma parte da memória que não tem permissão para acessar. 
-Em palavras simples,quando algum programa tenta acessar a memória que está além dos limites permitidos que o sistema operacional alocou para o programa.
-*/
+// Tamanho do blocoo de escrita do arquivo
+#define BLOCK_SIZE 10000000  // 10 milhões
+
+// Total de bases nitrogenadas a serem geradas
+#define TOTAL_BASES 1000000000000 // 1 TRILHAO
 
 int generator_sequence() {
-    char sequence[SEQUENCE_SIZE];
-    int i;
+    // ABRE O ARQUIVO PARA ESCRITA
+    FILE *fp;
+    fp = fopen("sequencia_aleatoria.txt", "w");
+    if (fp == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        exit(1);
+    }
 
-    // inicializa o gerador de números aleatórios com a hora atual
     srand(time(NULL));
 
-    // gera a sequência de bases nitrogenadas aleatórias
-    for (i = 0; i < SEQUENCE_SIZE - 1; i++) {
-        switch (rand() % 4) {
-            case 0:
-                sequence[i] = 'A';
-                break;
-            case 1:
-                sequence[i] = 'C';
-                break;
-            case 2:
-                sequence[i] = 'G';
-                break;
-            case 3:
-                sequence[i] = 'T';
-                break;
-        }
+    //loop para gerar e escrever os dados em blocos
+    for (long i = 0; i < TOTAL_BASES; i += BLOCK_SIZE) {
+        // aLOCA O BLOCO DE MEMORIA PARA ARMAZENAR OS DADOS
+        char *data = malloc(BLOCK_SIZE * sizeof(char));
+
+        // gera o blco de dados aleatorios
+        for (int j = 0; j < BLOCK_SIZE; j++) {
+            data[j] = "ACGT"[rand() % 4];
+        } 
+
+        //Escreve o bloco no arquivo
+        fwrite(data, sizeof(char), BLOCK_SIZE, fp);
+
+        // libera a memoria do bloco
+        free(data);
     }
-    sequence[SEQUENCE_SIZE - 1] = '\0'; // adiciona o caractere nulo de término de string
 
-    // escreve a sequência no arquivo
-    FILE *f = fopen("sequencia.txt", "w");
-    if (f == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        return 1;
-    }
-    fputs(sequence, f);
-    fclose(f);
+    fclose(fp);
 
-    printf("Sequência gerada com sucesso.\n");
-
+    return 0;   
 }
