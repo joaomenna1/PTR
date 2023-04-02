@@ -32,3 +32,10 @@ int main() {
    No entanto, se as bases nitrogenadas são representadas por códigos mais compactos, como códigos de 2 bits, 
    então o tamanho do arquivo seria de cerca de 250 gigabytes. O tamanho real do arquivo pode variar dependendo da codificação utilizada.
 */
+
+Crie um programa em c, uma agenda com nome, telefone e idade, conforme a seguinte
+especificação:
+- A sua agenda deve ler os dados de um arquivo texto.
+- A sua agenda deve permitir a inserção de novos nomes.
+- A sua agenda deve permitir a exclusão de nomes.
+- A sua agenda deve permitir a modificação de dados.

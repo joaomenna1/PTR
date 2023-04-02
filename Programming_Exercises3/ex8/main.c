@@ -3,61 +3,59 @@
 #include <string.h>
 #include "agenda.h"
 
-#define MAX_NOME 50
-#define MAX_AGENDA 1000
-
-// Definição da estrutura Contato
-typedef struct {
-    char nome[50];
-    char telefone[20];
-    int idade;
-} Agenda;
-
 int main() {
-    Agenda listaContatos[MAX_AGENDA];
-    int numContatos = 0;
-    char nome[50];
-    Agenda agenda;
-    int opcao;
+    Agenda agenda = { {0}, 0 };
+    lerContatos(&agenda, "dados.txt");
 
-    lerAgenda(agenda, &n);
+    char novoNome[50];
+    char novoTelefone[20];
+    int novaIdade;
+    char nomeExcluir[50];
+    char nomeModificar[50];
 
-    do {
-        printf("\n--- AGENDA ---\n");
+    printf("Bem-vindo à agenda!\n\n");
+    int opcao = 0;
+    while (opcao != 5) {
+        printf("Escolha uma opção:\n");
         printf("1. Exibir contatos\n");
-        printf("2. Inserir novo contato\n");
+        printf("2. Adicionar contato\n");
         printf("3. Excluir contato\n");
-        printf("4. Excluir Modificar o contato\n");
-        printf("0. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("4. Modificar contato\n");
+        printf("5. Sair\n");
         scanf("%d", &opcao);
-
+        printf("\n");
         switch (opcao) {
             case 1:
-                printf("\n--- Contatos na agenda ---\n");
-                for (int i = 0; i < n; i++) {
-                    printf("%s - %s - %d anos\n", agenda[i].nome, agenda[i].telefone, agenda[i].idade);
-                }
+                exibirContatos(&agenda);
                 break;
             case 2:
-                inserirContato(agenda, &nome);
+                printf("Digite o nome do novo contato: ");
+                scanf("%s", novoNome);
+                printf("Digite o telefone do novo contato: ");
+                scanf("%s", novoTelefone);
+                printf("Digite a idade do novo contato: ");
+                scanf("%d", &novaIdade);
+                adicionarContato(&agenda, novoNome, novoTelefone, novaIdade);
                 break;
-            case 3:
-                excluirContato(agenda, &nome);
+            case 3:  
+                printf("Digite o nome do contato que deseja excluir: ");
+                scanf("%s", nomeExcluir);
+                excluirContato(&agenda, nomeExcluir);
                 break;
             case 4:
-                printf("Nome: ");
-                scanf("%s", nome);
-                modificarContato(listaContatos, numContatos, nome);
+                printf("Digite o nome do contato que deseja modificar: ");
+                scanf("%s", nomeModificar);
+                modificarContato(&agenda, nomeModificar);
                 break;
-            case 0:
-                printf("\nSaindo...\n");
+            case 5:
+                printf("Obrigado por usar a agenda!\n");
                 break;
             default:
-                printf("\nOpção inválida!\n");
+                printf("Opção inválida. Tente novamente.\n");
                 break;
         }
-    } while (opcao != 0);
+        printf("\n");
+    }
 
     return 0;
 }

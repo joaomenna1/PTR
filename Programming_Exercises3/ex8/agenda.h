@@ -1,35 +1,36 @@
 #ifndef AGENDA_H
 #define AGENDA_H
 
-#define MAX_NOME 50
-#define MAX_AGENDA 1000
+#define MAX_CONTATOS 100
 
-struct contato {
-    char nome[MAX_NOME];
-    char telefone[15];
+// Estrutura para armazenar os dados de um contato
+typedef struct {
+    char nome[50];
+    char telefone[20];
     int idade;
-};
+} Contato;
 
-/*
-Este programa lê os dados da agenda a partir do arquivo agenda.txt e exibe na tela os contatos 
-salvos na agenda. Para cada contato, é exibido o nome, telefone e idade. A função lerAgenda lê os 
-dados do arquivo e armazena na estrutura de dados agenda, que é um vetor de contatos. 
-O parâmetro n é passado por referência para a função, pois a função precisa saber quantos contatos 
-foram lidos do arquivo e atualizar o valor de n para que seja utilizado posteriormente 
-pelo programa.*/
-void lerAgenda(struct contato *agenda, int *n);
+// Estrutura para armazenar a agenda
+typedef struct {
+    Contato contatos[MAX_CONTATOS];
+    int tamanho;
+} Agenda;
 
-/*
-inserirContato, que recebe como parâmetros o vetor de contatos agenda e o número atual de contatos n. 
-A função solicita ao usuário que digite o nome, telefone e idade do novo contato, 
-e armazena esses dados na próxima posição livre do vetor agenda. 
-Caso a agenda já esteja cheia, a função exibe uma mensagem de erro.
-*/
-void inserirContato(struct contato *agenda, int *n);
 
-void excluirContato(struct contato *agenda, int *n);
+// Função que lê os contatos de um arquivo e os adiciona na agenda
+void lerContatos(Agenda* agenda, char* arquivo);
 
-void modificarContato(struct contato *agenda, int n);
+// Função que exibe os contatos da agenda
+void exibirContatos(Agenda* agenda);
+
+// Função que adiciona um novo contato na agenda
+void adicionarContato(Agenda* agenda, char* nome, char* telefone, int idade);
+
+// Função que exclui um contato da agenda
+void excluirContato(Agenda* agenda, char* nome);
+
+// Função que modifica os dados de um contato na agenda
+void modificarContato(Agenda* agenda, char* nome);
 
 #endif
 

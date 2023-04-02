@@ -2,104 +2,104 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_NOME 50
-#define MAX_AGENDA 1000
+#define MAX_CONTATOS 100
 
-struct contato {
-    char nome[MAX_NOME];
-    char telefone[15];
+// Estrutura para armazenar os dados de um contato
+typedef struct {
+    char nome[50];
+    char telefone[20];
     int idade;
-};
+} Contato;
 
+// Estrutura para armazenar a agenda
+typedef struct {
+    Contato contatos[MAX_CONTATOS];
+    int tamanho;
+} Agenda;
 
-void lerAgenda(struct contato *agenda, int *n) {
-    FILE *arquivo;
-    arquivo = fopen("agenda.txt", "r");
-
-    if (arquivo == NULL) {
-        printf("Falha ao abrir o arquivo, pois esta vazia!\n");
-        return;
+// Função que lê os contatos de um arquivo e os adiciona na agenda
+void lerContatos(Agenda* agenda, char* arquivo) {
+    FILE* f = fopen(arquivo, "r");
+    if (f == NULL) {
+        printf("Erro ao abrir o arquivo %s.\n", arquivo);
+        exit(1);
     }
-
-    while (!feof(arquivo) && *n < MAX_AGENDA) {
-        fscanf(arquivo, "%s %s %d", agenda[*n].nome, agenda[*n].telefone, &agenda[*n].idade);
-        (*n)++;
+    char linha[100];
+    while (fgets(linha, 100, f) != NULL) {
+        char* nome = strtok(linha, ",");
+        char* telefone = strtok(NULL, ",");
+        int idade = atoi(strtok(NULL, ","));
+        Contato contato = { "", "", 0 };
+        strcpy(contato.nome, nome);
+        strcpy(contato.telefone, telefone);
+        contato.idade = idade;
+        agenda->contatos[agenda->tamanho] = contato;
+        agenda->tamanho++;
     }
-
-    fclose(arquivo);
+    fclose(f);
 }
 
-void inserirContato(struct contato *agenda, int *n) {
-    if (*n == MAX_AGENDA) {
-        printf("Agenda cheia! Impossível inserir novo contato.\n");
-        return;
+// Função que exibe os contatos da agenda
+void exibirContatos(Agenda* agenda) {
+    printf("Contatos na agenda:\n");
+    for (int i = 0; i < agenda->tamanho; i++) {
+        Contato contato = agenda->contatos[i];
+        printf("Nome: %s\nTelefone: %s\nIdade: %d\n\n", contato.nome, contato.telefone, contato.idade);
     }
-
-    printf("Digite o nome do novo contato: ");
-    scanf("%s", agenda[*n].nome);
-
-    printf("Digite o telefone do novo contato: ");
-    scanf("%s", agenda[*n].telefone);
-
-    printf("Digite a idade do novo contato: ");
-    scanf("%d", &agenda[*n].idade);
-
-    (*n)++;
 }
 
-void excluirContato(struct contato *agenda, int *n) {
-    char nomeExcluir[MAX_NOME];
-    int i, posicaoExcluir = -1;
+// Função que adiciona um novo contato na agenda
+void adicionarContato(Agenda* agenda, char* nome, char* telefone, int idade) {
+    if (agenda->tamanho < MAX_CONTATOS) {
+        Contato contato = { "", "", 0 };
+        strcpy(contato.nome, nome);
+        strcpy(contato.telefone, telefone);
+        contato.idade = idade;
+        agenda->contatos[agenda->tamanho] = contato;
+        agenda->tamanho++;
+        printf("Contato %s adicionado com sucesso.\n", nome);
+    } else {
+        printf("Não foi possível adicionar o contato. A agenda está cheia.\n");
+    }
+}
 
-    printf("Digite o nome do contato a ser excluído: ");
-    scanf("%s", nomeExcluir);
-
-    for (i = 0; i < *n; i++) {
-        if (strcmp(nomeExcluir, agenda[i].nome) == 0) {
-            posicaoExcluir = i;
-            break;
+// Função que exclui um contato da agenda
+void excluirContato(Agenda* agenda, char* nome) {
+    int i;
+    for (i = 0; i < agenda->tamanho; i++) {
+        if (strcmp(agenda->contatos[i].nome, nome) == 0) {
+            // Remove o contato da agenda
+            for (int j = i; j < agenda->tamanho - 1; j++) {
+                agenda->contatos[j] = agenda->contatos[j+1];
+            }
+            agenda->tamanho--;
+            printf("Contato %s removido com sucesso.\n", nome);
+            return;
         }
     }
-
-    if (posicaoExcluir == -1) {
-        printf("Contato não encontrado na agenda.\n");
-        return;
-    }
-
-    for (i = posicaoExcluir; i < (*n) - 1; i++) {
-        strcpy(agenda[i].nome, agenda[i + 1].nome);
-        strcpy(agenda[i].telefone, agenda[i + 1].telefone);
-        agenda[i].idade = agenda[i + 1].idade;
-    }
-
-    (*n)--;
-    printf("Contato excluído com sucesso!\n");
+    printf("Contato %s não encontrado na agenda.\n", nome);
 }
 
-void modificarContato(struct contato *agenda, int n) {
-    char nomeModificar[MAX_NOME];
-    int i, posicaoModificar = -1;
-
-    printf("Digite o nome do contato a ser modificado: ");
-    scanf("%s", nomeModificar);
-
-    for (i = 0; i < n; i++) {
-        if (strcmp(nomeModificar, agenda[i].nome) == 0) {
-            posicaoModificar = i;
-            break;
+// Função que modifica os dados de um contato na agenda
+void modificarContato(Agenda* agenda, char* nome) {
+    int i;
+    for (i = 0; i < agenda->tamanho; i++) {
+        if (strcmp(agenda->contatos[i].nome, nome) == 0) {
+            char novoNome[50];
+            char novoTelefone[20];
+            int novaIdade;
+            printf("Digite o novo nome do contato: ");
+            scanf("%s", novoNome);
+            printf("Digite o novo telefone do contato: ");
+            scanf("%s", novoTelefone);
+            printf("Digite a nova idade do contato: ");
+            scanf("%d", &novaIdade);
+            strcpy(agenda->contatos[i].nome, novoNome);
+            strcpy(agenda->contatos[i].telefone, novoTelefone);
+            agenda->contatos[i].idade = novaIdade;
+            printf("Contato %s modificado com sucesso.\n", nome);
+            return;
         }
     }
-
-    if (posicaoModificar == -1) {
-        printf("Contato não encontrado na agenda.\n");
-        return;
-    }
-
-    printf("Digite o novo telefone do contato: ");
-    scanf("%s", agenda[posicaoModificar].telefone);
-
-    printf("Digite a nova idade do contato: ");
-    scanf("%d", &agenda[posicaoModificar].idade);
-
-    printf("Contato modificado com sucesso!\n");
+    printf("Contato %s não encontrado na agenda.\n", nome);
 }
